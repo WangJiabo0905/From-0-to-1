@@ -1,0 +1,56 @@
+#include<iostream>
+using namespace std;
+
+int who_is_last(int* child,int n,int m);
+
+int main()
+{
+	int m,n;
+	cin >> m >> n;
+	int* child = new int[n]();
+
+	int last=who_is_last(child,n,m);
+
+	cout << last << endl;
+
+	delete[] child;
+	return 0;
+}
+
+int who_is_last(int* child, int n, int m)
+{
+
+
+
+	for (int i = 0; i < n; i++)
+	{
+		*(child + i) = 1;
+	}
+
+	int count = 0;
+	int index = -1;
+	int step = 0;
+	while (count < n-1)
+	{
+		
+		index = (index+1) % n;
+		if (*(child + index))
+		{
+			step++;
+		}
+		if (step == m)
+		{
+			*(child + index) = 0;
+			count++;
+			step = 0;
+		}
+	}
+
+
+	for (int i = 0; i < n; i++)
+	{
+		if (*(child + i) == 1)return (i + 1);
+	}
+
+	return -1;
+}
