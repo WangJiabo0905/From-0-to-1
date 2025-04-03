@@ -1,1 +1,41 @@
 
+//Lambda 表达式是一种内联定义的函数对象，可以像普通函数一样调用，但无需显式声明函数名
+
+//由易到难
+
+//结构[capture](parameters)mutable->return_type{body}
+//     捕获列表 参数列表   可选(对返回值的要求是否加->) 返回类型 函数体
+
+
+//不捕无参无返回值要求
+//#include<iostream>
+//using namespace std;
+//int main()
+//{
+//	auto hello = []() {cout << "Hello,Lambda!" << endl; };
+//	hello();
+//	return 0;
+//}
+
+//不捕有参
+//#include <iostream>
+//int main() 
+// {
+//    auto add = [](int a, int b) { return a + b; };
+//    std::cout << add(3, 4) << std::endl;  // 输出 7
+//    return 0;
+//}
+
+
+//有捕有参
+//#include <iostream>
+//int main() 
+//{
+//    int x = 10;
+//    auto increment = [x](int n) { return x + n; };  // 按值捕获 x
+//    std::cout << increment(5) << std::endl;  // 输出 15
+//    return 0;
+//}
+
+具体还有[=][&][&,x]各种捕获条件和用法，过于复杂前期先不开展学习
+
