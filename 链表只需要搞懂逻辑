@@ -1,0 +1,184 @@
+不想说那么多struct的知识点，这里直接解决困住新手的最大的问题——链表的逻辑！
+我相信所有第一次学习链表的人都是被各种插入删除链表中各种next和赋值困扰
+这里不断地转换，根本理不清逻辑。
+
+下面是一个构造链表的函数；
+                                                                          ListNode* createList()
+                                                                            {
+                                                                              ListNode* head = NULL;
+                                                                              ListNode* p1, * p2;
+                                                                              p1 = new ListNode;
+                                                                          
+                                                                              p2 = p1;                  //这大概就是第一个问题点！为什么要写p1=p2？     在p2没有new一个结构体类型出来的时候，就把他当成单纯的指针，这个指针指向结构体p1(无赋值的)；
+                                                                              cin >> p1->val;           //处理p1
+                                                                              while (p1->val != -1)
+                                                                              {
+                  这里解释第一次建立头节点                                       if (head == NULL)
+同样的把head和p2这种没有new一个结构的，全部看成单纯的指针，                        head = p1;              //这里和前面的p2=p1，差不多，把head就理解成一个单纯的指针，如果不指向p1就是空指针了
+现在head，p1，p2指向同一个刚被new出来的位置，                                                       
+                                                                                 else p2->next = p1;     //这里就会是第二个大问题！！head不空为什么要动用p2？    先明白这里的p1是一个没有记录过得新数据，  而前面p2指向了p1，这里相当于给p1后面加了个新值，
+                                                                                                                                                              动用p2的原因是，原来的p1不能动！，一旦动了前一个数据就没了，p1这个指针一旦离开原来的数据，就指不回来了；
+                                                                                                                                                                所以必须要有一个p2；
+                                                                              
+ 对于head为空，这个表达式没有作用，因为p1没动，只是多了一个head指向它             p2 = p1;                                                                       一定要清楚原来p1和p2都是指向相同的一个地方，现在p2不在了，自然要给p2赋另外一个值。
+             现在把p1放出去赋值，还有head，p2指向原来的数据                      p1 = new struct ListNode;                                                        好了，现在head，p2都是满的，p1空了，去赋新值！
+再往后的循环，只负责把p1放出去存值，建立连接后用p2再指住                         cin >> p1->val;
+                                                                              }
+                                                                              p2->next = NULL;                                                                  这里也就非常能理解为什么是p2的next为空，本来就是p2和head在站位，p1只负责添值
+                                                                              delete p1;                                                                        不需要添值了，就没用了，动态变量需要我们自己处理，释放掉！
+                                                                          
+                                                                              return head;
+                                                                             }
+
+一个链表内，永远只有头和尾两个指针指着就好，只要中间的联系也就是->next存在，就能记录，第三个指针就是用来存值的，其他的两个指针，大概率头结第一次指向后就不动了，尾节点（p2）一直随着（p1）的赋值往后挪。
+
+注意，struct也有构造函数
+struct node
+{
+  int date;
+  struct *node next;
+  node(int val):date(val),next(nullptr){}
+};
+
+下面是一种非常巧妙的介绍方式，融合了类和链表！！！！！
+极其巧妙！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+#include <iostream>
+
+class LinkedList {
+private:
+    struct Node {
+        int data;
+        Node* next;
+        Node(int val) : data(val), next(nullptr) {}
+    };
+    Node* head;  // 头指针
+    Node* tail;  // 尾指针（可选，优化尾插）
+    size_t size; // 链表长度
+
+public:
+    LinkedList() : head(nullptr), tail(nullptr), size(0) {}
+
+    // 析构函数，释放内存
+    ~LinkedList() {
+        Node* current = head;
+        while (current) {
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+    }
+
+    // 头插
+    void push_front(int val) {
+        Node* newNode = new Node(val);
+        newNode->next = head;
+        head = newNode;
+        if (!tail) tail = head; // 空链表时更新 tail
+        size++;
+    }
+
+    // 尾插
+    void push_back(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    // 指定位置插入（0-based 索引）
+    void insert(size_t pos, int val) {
+        if (pos > size) return; // 越界检查
+        if (pos == 0) {
+            push_front(val);
+            return;
+        }
+        Node* newNode = new Node(val);
+        Node* current = head;
+        for (size_t i = 0; i < pos - 1; i++) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+        if (newNode->next == nullptr) tail = newNode; // 更新 tail
+        size++;
+    }
+
+    // 删除头节点
+    void pop_front() {
+        if (!head) return;
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        size--;
+        if (!head) tail = nullptr; // 变空时更新 tail
+    }
+
+    // 删除指定位置节点
+    void erase(size_t pos) {
+        if (!head || pos >= size) return;
+        if (pos == 0) {
+            pop_front();
+            return;
+        }
+        Node* current = head;
+        for (size_t i = 0; i < pos - 1; i++) {
+            current = current->next;
+        }
+        Node* toDelete = current->next;
+        current->next = toDelete->next;
+        if (toDelete == tail) tail = current; // 更新 tail
+        delete toDelete;
+        size--;
+    }
+
+    // 查找值
+    Node* find(int val) {
+        Node* current = head;
+        while (current) {
+            if (current->data == val) return current;
+            current = current->next;
+        }
+        return nullptr;
+    }
+
+    // 打印链表
+    void print() const {
+        Node* current = head;
+        while (current) {
+            std::cout << current->data << " -> ";
+            current = current->next;
+        }
+        std::cout << "nullptr\n";
+    }
+
+    // 获取长度
+    size_t getSize() const { return size; }
+};
+
+int main() {
+    LinkedList list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_front(0);
+    list.insert(2, 10);
+    list.print(); // 0 -> 1 -> 10 -> 2 -> nullptr
+    list.erase(1);
+    list.print(); // 0 -> 10 -> 2 -> nullptr
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
