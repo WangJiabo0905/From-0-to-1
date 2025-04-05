@@ -1,0 +1,21 @@
+int split(int x[],int first, int last)
+{   int split_point,pivot;
+    pivot = x[first];
+    split_point = first;
+    for (int unknown=first+1; unknown <=last; unknown++)
+    if (x[unknown] < pivot)
+       { split_point++;                                                  这里的split_point记录了一共有多少个比第一个数小的数字。
+        // 交换 x[split_point] 和 x[unknown] 的值
+        if (split_point != unknown)
+        { int t=x[split_point];
+        x[split_point] = x[unknown];                                       由于unknown一直在增加，所以unknown-split_point=有多少比第一个大的数字。
+        x[unknown] = t;                                  又因为当split_point没增加的时候，就相当于有一个大的数字被遍历过了，所以，一旦增加了，既说明unknown对应的是一个更小的数，也说明split_point指向更大的数。
+        }                                                                       所以毫无疑问交换，让同类扎堆。
+        }
+        // 交换 x[first] 和 x[split_point] 的值
+        if (split_point != first)                                             如果第一个数不是最小的，就用到了刚刚记录的多少个更小的数，把他们都移到另一边，交换就好了。
+        { x[first] = x[split_point];                                           但是！！！这里的前提是那些比第一个小的数字是扎堆的。也就是上面的交换过程
+        x[split_point] = pivot;                                                 
+      }
+    return split_point;                                                        这样其实就找到了《第一个数》该放的位置！且左边都是更小的，右边都是更大的，再往后递归就好了。
+}
