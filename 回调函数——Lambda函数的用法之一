@@ -1,0 +1,28 @@
+double integrate(std::function<double(double)> f, double a, double b)   匿名函数在定义的时候是function<double(double)>这种类型，是一个double的参数，同时要求返回值为double的匿名函数的类型
+integrate([](double x) -> double { return x * x; }, 0, 1);   在调用时的表述方式，直接在对应位置写一个匿名函数。不用赋值给一个标识符。
+
+需要注意的是，对于一个 λ 表达式，只有当它的 < 环境变量使用说明 > 为空（方括号内为空），即它不使用任何环境变量（非局部变量）时，才可以把它转换成函数指针！
+
+
+#include <iostream>
+#include <functional>
+
+double integrate(std::function<double(double)> f, double a, double b)                          //矩形面积和来求积分
+{
+    const int n = 1000; 
+    double dx = (b - a) / n;
+    double sum = 0.0;
+    for (int i = 0; i < n; ++i) 
+    {
+        double x = a + i * dx;
+        sum += f(x) * dx;                                                                       // 调用 lambda 函数
+    }
+    return sum;
+}
+
+int main() 
+{                                                                                  
+    double result = integrate([](double x) -> double { return x * x; }, 0, 1);                  // 使用 lambda 函数计算 x^2 在 [0, 1] 上的积分
+    std::cout << "Integral of x^2 from 0 to 1: " << result << std::endl;
+    return 0;
+}
