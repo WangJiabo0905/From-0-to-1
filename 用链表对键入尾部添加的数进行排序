@@ -1,0 +1,84 @@
+struct arr
+{
+	int val;
+	arr* next;
+};
+extern arr* input();                            //这里面的extern 可以没有
+extern void sort(struct arr* h);                
+extern void put(struct arr* h);
+extern void dele(struct arr* h);
+
+int main()                                    //编译器会先处理#include所以main函数的位置不一定要在之后
+{
+	arr* head = input();
+
+	sort(head);
+	put(head);
+	dele(head);
+}
+
+#include<iostream>
+using namespace std;
+arr* input()
+{
+	arr* head = NULL, * tail = NULL;                            //这里使用的是在尾部添加的方式；
+	int x;
+	cin >> x;
+	while (x != -1)
+	{
+		arr* p = new arr;
+		p->val = x;
+		p->next = NULL;                                        //新定义的节点一定要记得初始化；
+		if (head == NULL)
+		{
+			head = tail = p;                                    //第一个节点，头尾都要指向，这也是添加链表的统一方法，一般会有三个指向节点的指针——一头负责标定开始，一尾负责移动增添长度，一个新节点个负责new添加；
+		}
+		else                                                   //（这里没有展示）还有一种通过头添加的方式添加链表，新输入的数据在链表头部。这种方式只需要两个指针。p->next = head;head=p；
+		{
+			tail->next = p;
+			tail = p;
+		}
+
+		cin >> x;
+	}
+	return head;
+}
+
+void sort(struct arr* h)
+{
+	if (h == NULL || h->next == NULL)
+	{
+		return;
+	}
+	for (arr* point = h; point->next != NULL; point = point->next)
+	{
+		int min = point->val;                                                        //每次都在剩下的数据中确定一个最小的往前放。
+		for (arr* point2 = point->next; point2 != NULL; point2 = point2->next)
+		{
+			if (point2->val < min)
+			{
+				int temp = point2->val;
+				point2->val = point->val;                                              //一定要交换链表节点指向的值而不是用min这个标识符，把原地址的数据交换了
+				point->val = temp;
+			}
+		}
+	}
+
+}
+void put(struct arr* h)
+{
+	for (arr* point = h; point != NULL; point = point->next)                         //本身不为空集就好。
+	{
+		cout << point->val << endl;
+	}
+
+}
+void dele(struct arr* h)
+{
+	while (h != NULL)
+	{
+		arr* del = h;
+		h = h->next;                                                               //这里体会指针移动的感觉，一点h离开，换上del，原数据就和h，没关系了，换del管理，释放del，就释放了原数据
+		delete del;
+	}
+}
