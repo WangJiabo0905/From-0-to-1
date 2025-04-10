@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+class MyClass 
+{
+private:
+    static int count;                                 // 静态成员变量
+public:
+                                                      // 静态成员函数
+    static void incrementCount() 
+    {
+        count++;                                      //只能访问静态成员变量
+    }
+    
+                                                    // 静态成员函数获取count值
+    static int getCount()
+    {
+        return count;                               //返回也只能是静态的
+    }
+};
+
+                                                    // 在类外初始化静态成员变量
+int MyClass::count = 0;                             //注意，这里并不需要一个对象，什么Myclass A；然后把A里面的count初始化，不用，因为静态数据和函数，不受对象的限制，反正都是处理同一个区域
+
+int main() {
+                                                    // 不需要创建对象就可以调用静态成员函数，和上面一样
+    MyClass::incrementCount();
+    MyClass::incrementCount();
+    
+    cout << "Count: " << MyClass::getCount() << endl;  // 输出: Count: 2
+    
+                                                     // 也可以通过对象调用，一般方式也完全没问题
+    MyClass obj;
+    obj.incrementCount();
+    
+    cout << "Count: " << MyClass::getCount() << endl;  // 输出: Count: 3
+    
+    return 0;
+}
