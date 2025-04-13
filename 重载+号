@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+class Complex {
+public:
+    double real; 
+    double imag;  
+
+    Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {}
+
+                                                                                                  // 重载加号操作符
+    Complex operator+(const Complex& other) 
+    {
+        return Complex(real + other.real, imag + other.imag);
+    }
+
+    void display() const 
+    {
+        cout << real << " + " << imag << "i ";
+            if (imag >= 0)
+                cout << "i";
+            else
+                cout << " - " << -imag << "i";
+        cout << endl;
+    }
+};
+
+int main() 
+{
+                                                                                           // 创建两个复数对象
+    Complex c1(3.5, 2.5);
+    Complex c2(1.5, -4.5);                                                                                            // 使用重载的 + 操作符
+    Complex c3 = c1 + c2;
+    cout << "c1 = ";
+    c1.display();
+    cout << "c2 = ";
+    c2.display();
+    cout << "c1 + c2 = ";
+    c3.display();
+
+    return 0;
+}
