@@ -1,0 +1,29 @@
+  struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(nullptr) {}
+  };
+ 
+class Solution
+{
+public:
+    ListNode* getIntersectionNode(ListNode* headA, ListNode* headB)
+    {
+        if (headA == nullptr || headB == nullptr)
+        {
+            return nullptr;
+        }
+        ListNode* pA = headA, * pB = headB;  //一般都用另外的新指针来遍历；不直接动用head；         
+        while (pA != pB)//这里直接用地址判断交点就是地址相同的点
+        {
+            pA = (pA == nullptr ? headB : pA->next);
+            pB = (pB == nullptr ? headA : pB->next);
+        }
+
+        /*每个指针在遍历完自己的链表后，会“跳转”到另一个链表的头部继续遍历。
+        这样，两个指针最终会“走过相同的路径长度”，从而有机会在交点相遇。
+        假设链表 A 的长度为 a + c，链表 B 的长度为 b + c*/
+
+        return pA;
+    }
+};
