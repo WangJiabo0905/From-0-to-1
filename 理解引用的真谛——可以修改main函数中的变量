@@ -1,0 +1,43 @@
+#include<iostream>
+using namespace std;
+struct NewNode
+{
+	int val;
+	NewNode* next;
+};
+
+NewNode* createnewnode(NewNode* head,NewNode *&tail,int val)
+{
+	NewNode* newnode = new NewNode;                                                 //最开始我直接在函数里定义head和tail结果每次启用函数就指向空集重新更新了
+	newnode->val = val;                                                             //然后我定义在了main函数中，结果崩了，因为main中的head一直在通过返回值更新，而tail却一直是零
+	newnode->next = nullptr;                                                        //最后学会了指针引用，直接更改main函数中的指针才能达成目标
+	if (head == nullptr)
+	{
+		head = newnode;
+		tail= newnode;
+	}
+	else
+	{
+		tail->next = newnode;
+		tail = newnode;
+	}
+	return head;
+}
+
+int main()
+{
+	NewNode* head = nullptr,*tail=nullptr;
+	for (int i = 0; i < 10; i++)
+	{
+		head = createnewnode(head,tail,i);
+	}
+	NewNode* p = head;
+	while (p != nullptr)
+	{
+		cout << p->val << " ";
+		p = p->next;
+	}
+
+	return 0;
+
+}
