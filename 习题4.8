@@ -1,0 +1,22 @@
+11.
+int Hermit(int n,int x)
+{
+	if (n == 0) return 1;
+	if (n == 2) return 2 * x;
+
+	if (n > 2)
+	{
+		return 2 * x * Hermit(n - 1, x) + 2 * (n - 1) * Hermit(n - 2, x);
+	}
+}
+12
+int ack(int m,int n)
+{
+	if (m == 0) return n+1;
+	if (n == 0) return ack(m-1,1);
+
+	if (n > 0&&m>0)
+	{
+		return ack(m - 1, ack(m, n - 1));
+	}
+}
