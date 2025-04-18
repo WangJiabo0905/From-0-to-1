@@ -20,3 +20,17 @@ int ack(int m,int n)
 		return ack(m - 1, ack(m, n - 1));
 	}
 }
+13
+int sumcow(int n)
+{
+	if (n == 1)return 1;
+
+	if (n == 2)return 1;
+
+	if (n == 3)return 1;
+
+	if (n > 3)
+	{
+		return sumcow(n - 1) + sumcow(n - 3);
+	}
+}
