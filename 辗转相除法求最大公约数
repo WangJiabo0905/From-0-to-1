@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+
+
+//辗转相除法
+int getmaxson(int m, int n)
+{
+	int temp = 0;
+	do
+	{
+		temp = m % n;
+		if (temp != 0)
+		{
+			m = n;
+			n = temp;
+		}
+		else
+		{
+			return n;
+		}
+	} while (true);
+}
+
+
+int main()
+{
+	cout << getmaxson(12, 16)<<endl;
+	system("pause");
+	return 0;
+}
