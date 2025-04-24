@@ -1,0 +1,19 @@
+5
+bool is_huiwen(int n)
+{
+	int a[10];
+	int temp = 1;
+	int index = 0;
+	while (temp)
+	{
+		a[index++] = n % 10;
+		n = n / 10;
+		temp = n;
+	}
+	for (int j = 0; j < (index-1) / 2; j++)
+	{
+		if (a[j] != a[index - 1 - j])
+			return 0;
+	}
+	return 1;
+}
