@@ -34,3 +34,19 @@ int sumcow(int n)
 		return sumcow(n - 1) + sumcow(n - 3);
 	}
 }
+14，另外独立了一个单元
+15
+int fib(int n, int a, int b)
+{
+	if (n == 1) return a;
+	else return fib(n - 1, b, a + b);
+}
+
+
+int main()
+{
+	cout << fib(10,1,1)<<endl;
+	system("pause");
+	return 0;
+}
+16，也独立了
